@@ -1,0 +1,8 @@
+.items {
+  display: flex;
+  flex-direction: column;
+}
+
+.items__edit {
+  user-select: none;
+}

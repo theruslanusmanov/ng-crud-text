@@ -1,0 +1,10 @@
+@for (item of items; track item.id) {
+  <div class="items">
+    <div class="items__edit">
+      <a [routerLink]="item.id">Edit</a>
+    </div>
+    <div class="items__content">
+      {{ item.content }}
+    </div>
+  </div>
+}
