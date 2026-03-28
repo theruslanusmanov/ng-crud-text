@@ -1,10 +1,7 @@
+<a routerLink="create" class="button">Create text</a>
+
 @for (item of items; track item.id) {
-  <div class="items">
-    <div class="items__edit">
-      <a [routerLink]="item.id">Edit</a>
-    </div>
-    <div class="items__content">
-      {{ item.content }}
-    </div>
-  </div>
+  <a class="item" [routerLink]="item.id">
+    {{ item.content }}
+  </a>
 }

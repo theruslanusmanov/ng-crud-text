@@ -53,6 +53,4 @@ export class Item {
   setColor(color: Color) {
     this.selectedColor = color;
   }
-
-  protected readonly Color = Color;
 }

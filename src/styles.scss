@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+.button {
+  background-color: #ffdc4c;
+  text-decoration: none;
+  padding: 4px 16px;
+  border-radius: 4px;
+  color: black;
+  font-weight: bold;
+  user-select: none;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
