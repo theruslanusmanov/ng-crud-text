@@ -1,1 +1,1 @@
-export * from './list-item-entity'
+export * from './item-entity'

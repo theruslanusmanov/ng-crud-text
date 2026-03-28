@@ -1,0 +1,61 @@
+.tooltip {
+  user-select: none;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  width: min-content;
+  height: min-content;
+}
+
+.content {
+  .content__annotation {
+    &--red {
+      background-color: rgba(red, 0.3);
+    }
+
+    &--green {
+      background-color: rgba(green, 0.3);
+    }
+
+    &--blue {
+      background-color: rgba(blue, 0.3);
+    }
+  }
+
+  .content__underline {
+    text-decoration: underline;
+
+    &--red {
+      text-decoration-color: red;
+    }
+
+    &--green {
+      text-decoration-color: green;
+    }
+
+    &--blue {
+      text-decoration-color: blue;
+    }
+  }
+}
+
+.tooltip__colors, .tooltip__actions {
+  display: flex;
+}
+
+.tooltip__color {
+  width: 48px;
+  height: 48px;
+
+  &--red {
+    background-color: red;
+  }
+
+  &--green {
+    background-color: green;
+  }
+
+  &--blue {
+    background-color: blue;
+  }
+}

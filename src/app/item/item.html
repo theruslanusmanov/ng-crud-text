@@ -1,1 +1,20 @@
-<p>item works!</p>
+<p class="content" (mouseup)="showTooltip()" #content>
+  <ng-container *ngTemplateOutlet="tooltip"></ng-container>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque doloremque perferendis soluta tenetur vel. Aliquid
+  asperiores beatae cum dicta dolorum, ducimus eos excepturi labore laudantium maiores molestiae quaerat quos,
+  ullam.
+</p>
+
+<ng-template #tooltip>
+  <div class="tooltip">
+    <div class="tooltip__actions">
+      <div class="tooltip__action" (click)="annotate()">Annotate</div>
+      <div class="tooltip__action" (click)="underline()">Underline</div>
+    </div>
+    <div class="tooltip__colors">
+      @for (color of colors; track color) {
+        <div class="tooltip__color tooltip__color--{{color}}" (click)="setColor(color)"></div>
+      }
+    </div>
+  </div>
+</ng-template>
