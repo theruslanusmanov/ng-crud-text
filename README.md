@@ -1,5 +1,7 @@
 # [NgCrudText](https://ng-crud-text.vercel.app/)
 
+<img src="preview.png" width="720">
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.5.
 
 ## Development server
