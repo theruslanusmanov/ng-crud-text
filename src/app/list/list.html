@@ -4,6 +4,6 @@
 
 @for (item of items; track item.id) {
   <a class="item" [routerLink]="'view/' + item.id">
-    {{ item.content }}
+    <p class="content" [innerHTML]="item.content | safeHtml"></p>
   </a>
 }

@@ -5,16 +5,19 @@ import {
   ElementRef,
   inject,
   OnInit,
+  Pipe,
   Renderer2,
   signal,
   ViewChild,
-  WritableSignal
+  WritableSignal,
 } from '@angular/core';
 import { TextStorageService } from '../../core/services/text-storage-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
 import { ItemEntity } from '../../core';
 import { fromEvent } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
+import { PathKind } from '@angular/forms/signals';
+import Item = PathKind.Item;
 
 enum Color {
   RED = 'red',
@@ -22,9 +25,21 @@ enum Color {
   BLUE = 'blue',
 }
 
+@Pipe({
+  name: 'safeHtml',
+  standalone: true,
+})
+export class SafeHtmlPipe {
+  constructor(private sanitizer: DomSanitizer) {}
+
+  transform(html: any) {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
+}
+
 @Component({
   selector: 'app-view-item',
-  imports: [],
+  imports: [SafeHtmlPipe],
   templateUrl: './view-item.html',
   styleUrl: './view-item.scss',
 })
@@ -34,6 +49,7 @@ export class ViewItem implements OnInit, AfterViewInit {
   private textStorage = inject(TextStorageService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  domSanitizer = inject(DomSanitizer);
   item: WritableSignal<ItemEntity | undefined> = signal(undefined);
 
   @ViewChild('content', { read: ElementRef })
@@ -76,6 +92,11 @@ export class ViewItem implements OnInit, AfterViewInit {
       }
     }
     this.hideTooltip();
+    this.item.set({
+      id: this.item()!.id,
+      content: this.contentView.nativeElement.innerHTML,
+    });
+    this.textStorage.update(this.item() as ItemEntity);
   }
 
   underline() {
@@ -91,6 +112,11 @@ export class ViewItem implements OnInit, AfterViewInit {
       }
     }
     this.hideTooltip();
+    this.item.set({
+      id: this.item()!.id,
+      content: this.contentView.nativeElement.innerHTML,
+    });
+    this.textStorage.update(this.item() as ItemEntity);
   }
 
   setColor(color: Color) {

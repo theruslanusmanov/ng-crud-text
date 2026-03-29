@@ -1,32 +1,31 @@
-<p class="content" #content>
-  @if (isShowTooltip()) {
-    <div
-      #tooltip
-      class="tooltip"
-      [style.top]="tooltipTop() + 'px'"
-      [style.left]="tooltipLeft() + 'px'"
-    >
-      <div class="tooltip__actions">
-        <div class="tooltip__action" (click)="annotate()">Annotate</div>
-        <div class="tooltip__action" (click)="underline()">Underline</div>
-      </div>
-      <div class="tooltip__colors">
-        @for (color of colors; track color) {
-          <div class="tooltip__color tooltip__color--{{color}}" (click)="setColor(color)"></div>
-        }
-      </div>
-    </div>
-  }
-  @if (isShowAnnotation() && annotation()) {
-    <div
-      class="annotation"
-      [style.top]="annotationTop() + 'px'"
-      [style.left]="annotationLeft() + 'px'"
-    >
-      {{ annotation() }}
-    </div>
-  }
-  {{ item()?.content }}
+<p class="content" #content [innerHTML]="item()?.content | safeHtml"></p>
 
-</p>
+@if (isShowTooltip()) {
+  <div
+    #tooltip
+    class="tooltip"
+    [style.top]="tooltipTop() + 'px'"
+    [style.left]="tooltipLeft() + 'px'"
+  >
+    <div class="tooltip__actions">
+      <div class="tooltip__action" (click)="annotate()">Annotate</div>
+      <div class="tooltip__action" (click)="underline()">Underline</div>
+    </div>
+    <div class="tooltip__colors">
+      @for (color of colors; track color) {
+        <div class="tooltip__color tooltip__color--{{color}}" (click)="setColor(color)"></div>
+      }
+    </div>
+  </div>
+}
+@if (isShowAnnotation() && annotation()) {
+  <div
+    class="annotation"
+    [style.top]="annotationTop() + 'px'"
+    [style.left]="annotationLeft() + 'px'"
+  >
+    {{ annotation() }}
+  </div>
+}
+
 <button class="button" (click)="edit(item()!.id)">Edit</button>
