@@ -8,14 +8,13 @@ import {
   Renderer2,
   signal,
   ViewChild,
-  WritableSignal,
+  WritableSignal
 } from '@angular/core';
 import { TextStorageService } from '../../core/services/text-storage-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { ItemEntity } from '../../core';
 import { fromEvent } from 'rxjs';
-import { NgTemplateOutlet } from '@angular/common';
 
 enum Color {
   RED = 'red',
@@ -25,7 +24,7 @@ enum Color {
 
 @Component({
   selector: 'app-view-item',
-  imports: [NgTemplateOutlet],
+  imports: [],
   templateUrl: './view-item.html',
   styleUrl: './view-item.scss',
 })
@@ -35,9 +34,6 @@ export class ViewItem implements OnInit, AfterViewInit {
   private textStorage = inject(TextStorageService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  form = inject(FormBuilder).group({
-    content: [''],
-  });
   item: WritableSignal<ItemEntity | undefined> = signal(undefined);
 
   @ViewChild('content', { read: ElementRef })
@@ -52,6 +48,8 @@ export class ViewItem implements OnInit, AfterViewInit {
   annotationLeft = signal(0);
   isShowAnnotation = signal(false);
 
+  tooltipTop = signal(0);
+  tooltipLeft = signal(0);
   isShowTooltip = signal(false);
 
   showTooltip() {
@@ -72,7 +70,10 @@ export class ViewItem implements OnInit, AfterViewInit {
       this.renderer.setAttribute(wrapper, 'data-annotation-text', 'ANNOTATION TEXT');
 
       const selectedRange = selection.getRangeAt(0);
-      selectedRange.surroundContents(wrapper);
+      const isSafeRange = selectedRange.startContainer === selectedRange.endContainer;
+      if (isSafeRange) {
+        selectedRange.surroundContents(wrapper);
+      }
     }
     this.hideTooltip();
   }
@@ -84,7 +85,10 @@ export class ViewItem implements OnInit, AfterViewInit {
       this.renderer.addClass(wrapper, 'content__underline');
       this.renderer.addClass(wrapper, `content__underline--${this.selectedColor}`);
       const selectedRange = selection.getRangeAt(0);
-      selectedRange.surroundContents(wrapper);
+      const isSafeRange = selectedRange.startContainer === selectedRange.endContainer;
+      if (isSafeRange) {
+        selectedRange.surroundContents(wrapper);
+      }
     }
     this.hideTooltip();
   }
@@ -95,10 +99,12 @@ export class ViewItem implements OnInit, AfterViewInit {
 
   listenAnnotations() {
     fromEvent(this.contentView.nativeElement, 'mouseover').subscribe((event: any) => {
-      this.annotation.set(event.target.getAttribute('data-annotation-text'));
-      this.annotationTop.set(event.pageY);
-      this.annotationLeft.set(event.pageX);
-      this.isShowAnnotation.set(true);
+      if (this.selection?.isCollapsed) {
+        this.annotation.set(event.target.getAttribute('data-annotation-text'));
+        this.annotationTop.set(event.pageY);
+        this.annotationLeft.set(event.pageX);
+        this.isShowAnnotation.set(true);
+      }
     });
     fromEvent(this.contentView.nativeElement, 'mouseout').subscribe((event: any) => {
       this.isShowAnnotation.set(false);
@@ -107,11 +113,13 @@ export class ViewItem implements OnInit, AfterViewInit {
 
   listenSelectionChange() {
     fromEvent(this.contentView.nativeElement, 'mouseup').subscribe((event: any) => {
-      console.log(event);
+      if (!this.isShowTooltip()) {
+        this.tooltipTop.set(event.pageY);
+        this.tooltipLeft.set(event.pageX);
+      }
       this.showTooltip();
     });
     fromEvent(this.document, 'click').subscribe((event: any) => {
-      console.log(this.selection);
       if (this.selection?.isCollapsed) {
         this.hideTooltip();
       }

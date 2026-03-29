@@ -5,6 +5,8 @@
 }
 
 .tooltip {
+  cursor: pointer;
+  background-color: white;
   position: absolute;
   user-select: none;
   border: 1px solid black;
