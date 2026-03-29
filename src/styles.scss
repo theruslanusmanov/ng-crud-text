@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+  position: relative;
+}
+
 .button {
+  cursor: pointer;
   background-color: #ffdc4c;
   text-decoration: none;
   padding: 4px 16px;
@@ -7,6 +13,9 @@
   color: black;
   font-weight: bold;
   user-select: none;
+  border: none;
+  width: min-content;
+  white-space: nowrap;
 }
 
 a {

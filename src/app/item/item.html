@@ -1,9 +1,21 @@
-<p class="content" (mouseup)="showTooltip()" #content>
-  <ng-container *ngTemplateOutlet="tooltip"></ng-container>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque doloremque perferendis soluta tenetur vel. Aliquid
-  asperiores beatae cum dicta dolorum, ducimus eos excepturi labore laudantium maiores molestiae quaerat quos,
-  ullam.
-</p>
+@if (viewMode === ViewMode.VIEW || viewMode === ViewMode.EDIT) {
+  <p class="content" #content>
+    @if (isShowTooltip()) {
+      <ng-container *ngTemplateOutlet="tooltip"></ng-container>
+    }
+    @if (isShowAnnotation() && annotation()) {
+      <ng-container *ngTemplateOutlet="annotationTooltip"></ng-container>
+    }
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque doloremque perferendis soluta tenetur vel. Aliquid
+    asperiores beatae cum dicta dolorum, ducimus eos excepturi labore laudantium maiores molestiae quaerat quos,
+    ullam.
+  </p>
+} @else if (viewMode === ViewMode.CREATE) {
+  <div class="form">
+    <textarea></textarea>
+    <button class="button">Create</button>
+  </div>
+}
 
 <ng-template #tooltip>
   <div class="tooltip">
@@ -16,5 +28,15 @@
         <div class="tooltip__color tooltip__color--{{color}}" (click)="setColor(color)"></div>
       }
     </div>
+  </div>
+</ng-template>
+
+<ng-template #annotationTooltip>
+  <div
+    class="annotation"
+    [style.top]="annotationTop() + 'px'"
+    [style.left]="annotationLeft() + 'px'"
+  >
+    {{ annotation() }}
   </div>
 </ng-template>

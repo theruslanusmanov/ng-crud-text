@@ -5,6 +5,7 @@
 }
 
 .tooltip {
+  position: absolute;
   user-select: none;
   border: 1px solid black;
   display: flex;
@@ -64,4 +65,25 @@
   &--blue {
     background-color: blue;
   }
+}
+
+.annotation {
+  pointer-events: none;
+  position: absolute;
+  background-color: black;
+  color: white;
+  border-radius: 4px;
+  user-select: none;
+  width: min-content;
+  height: min-content;
+  white-space: nowrap;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }

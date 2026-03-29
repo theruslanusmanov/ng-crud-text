@@ -1,4 +1,6 @@
-<a routerLink="create" class="button">Create text</a>
+<a routerLink="edit">
+  <button class="button">Create text</button>
+</a>
 
 @for (item of items; track item.id) {
   <a class="item" [routerLink]="item.id">
