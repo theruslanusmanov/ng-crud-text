@@ -1,23 +1,21 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   DOCUMENT,
   ElementRef,
   inject,
   OnInit,
-  Pipe,
   Renderer2,
   signal,
   ViewChild,
-  WritableSignal,
+  WritableSignal
 } from '@angular/core';
-import { TextStorageService } from '../../core/services/text-storage-service';
+import { TextStorageService } from '../../core/services/text-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemEntity } from '../../core';
 import { fromEvent } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
-import { PathKind } from '@angular/forms/signals';
-import Item = PathKind.Item;
+import { SafeHtmlPipe } from '../../core/pipes/safe-html.pipe';
 
 enum Color {
   RED = 'red',
@@ -25,23 +23,12 @@ enum Color {
   BLUE = 'blue',
 }
 
-@Pipe({
-  name: 'safeHtml',
-  standalone: true,
-})
-export class SafeHtmlPipe {
-  constructor(private sanitizer: DomSanitizer) {}
-
-  transform(html: any) {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
-  }
-}
-
 @Component({
   selector: 'app-view-item',
   imports: [SafeHtmlPipe],
   templateUrl: './view-item.html',
   styleUrl: './view-item.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewItem implements OnInit, AfterViewInit {
   private document = inject(DOCUMENT);
@@ -49,7 +36,7 @@ export class ViewItem implements OnInit, AfterViewInit {
   private textStorage = inject(TextStorageService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  domSanitizer = inject(DomSanitizer);
+
   item: WritableSignal<ItemEntity | undefined> = signal(undefined);
 
   @ViewChild('content', { read: ElementRef })
@@ -57,7 +44,7 @@ export class ViewItem implements OnInit, AfterViewInit {
 
   readonly colors: Color[] = [Color.RED, Color.GREEN, Color.BLUE];
   private selection: Selection | null = null;
-  private selectedColor: Color = Color.RED;
+  selectedColor: Color = Color.RED;
 
   annotation = signal('');
   annotationTop = signal(0);
@@ -80,10 +67,11 @@ export class ViewItem implements OnInit, AfterViewInit {
   annotate() {
     const selection = this.selection;
     if (selection) {
+      let sign = prompt('Annotation');
       const wrapper = this.renderer.createElement('span');
       this.renderer.addClass(wrapper, 'content__annotation');
       this.renderer.addClass(wrapper, `content__annotation--${this.selectedColor}`);
-      this.renderer.setAttribute(wrapper, 'data-annotation-text', 'ANNOTATION TEXT');
+      this.renderer.setAttribute(wrapper, 'data-annotation-text', sign || 'annotation');
 
       const selectedRange = selection.getRangeAt(0);
       const isSafeRange = selectedRange.startContainer === selectedRange.endContainer;

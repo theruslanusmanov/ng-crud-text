@@ -13,7 +13,9 @@
     </div>
     <div class="tooltip__colors">
       @for (color of colors; track color) {
-        <div class="tooltip__color tooltip__color--{{color}}" (click)="setColor(color)"></div>
+        <div class="tooltip__color tooltip__color--{{color}}"
+             (click)="setColor(color)"
+        ></div>
       }
     </div>
   </div>

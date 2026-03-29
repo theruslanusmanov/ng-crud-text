@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { TextStorageService } from '../../core/services/text-storage-service';
+import { TextStorageService } from '../../core/services/text-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

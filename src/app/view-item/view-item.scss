@@ -5,15 +5,18 @@
 }
 
 .tooltip {
+  background-color: black;
+  color: white;
   cursor: pointer;
-  background-color: white;
   position: absolute;
   user-select: none;
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
   width: min-content;
   height: min-content;
+  padding: 8px;
+  gap: 4px;
+  border-radius: 4px;
 }
 
 .content {
@@ -51,11 +54,13 @@
 
 .tooltip__colors, .tooltip__actions {
   display: flex;
+  gap: 8px;
 }
 
 .tooltip__color {
-  width: 48px;
-  height: 48px;
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
 
   &--red {
     background-color: red;
@@ -81,7 +86,7 @@
   height: min-content;
   white-space: nowrap;
   padding: 2px 6px;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: bold;
 }
 

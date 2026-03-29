@@ -1,8 +1,9 @@
 import { Component, DOCUMENT, inject, OnInit } from '@angular/core';
 import { ItemEntity } from '../../core';
 import { RouterLink } from '@angular/router';
-import { TextStorageService } from '../../core/services/text-storage-service';
-import { SafeHtmlPipe } from '../view-item/view-item';
+import { TextStorageService } from '../../core/services/text-storage.service';
+
+import { SafeHtmlPipe } from '../../core/pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-list',

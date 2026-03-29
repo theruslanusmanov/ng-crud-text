@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { TextStorageService } from '../../core/services/text-storage-service';
+import { TextStorageService } from '../../core/services/text-storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ItemEntity } from '../../core';
