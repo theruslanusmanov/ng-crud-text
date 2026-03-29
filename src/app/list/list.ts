@@ -1,6 +1,7 @@
 import { Component, DOCUMENT, inject, OnInit } from '@angular/core';
 import { ItemEntity } from '../../core';
 import { RouterLink } from '@angular/router';
+import { TextStorageService } from '../../core/services/text-storage-service';
 
 const items: ItemEntity[] = [
   {
@@ -21,7 +22,7 @@ const items: ItemEntity[] = [
   },
 ];
 
-const STORAGE_ITEMS_KEY = 'items';
+
 
 @Component({
   selector: 'app-list',
@@ -30,17 +31,11 @@ const STORAGE_ITEMS_KEY = 'items';
   styleUrl: './list.scss',
 })
 export class List implements OnInit {
-  items: ItemEntity[] = [];
-  private localStorage: Storage | undefined = inject(DOCUMENT)?.defaultView?.localStorage;
+  private textStorage = inject(TextStorageService)
 
-  loadItems(): ItemEntity[] {
-    const items = this.localStorage?.getItem(STORAGE_ITEMS_KEY);
-    return items ? (JSON.parse(items) as ItemEntity[]) : [];
-  }
+  items: ItemEntity[] = [];
 
   ngOnInit() {
-    this.localStorage?.clear();
-    this.localStorage?.setItem(STORAGE_ITEMS_KEY, JSON.stringify(items));
-    this.items = this.loadItems();
+    this.items = this.textStorage.getAll();
   }
 }

@@ -1,0 +1,9 @@
+<div class="form" [formGroup]="form">
+  <h1>Update text</h1>
+  <textarea formControlName="content"></textarea>
+  <div class="form__actions">
+    <button class="button" (click)="update()">Update</button>
+    <button class="button" (click)="remove()">Delete</button>
+  </div>
+</div>
+

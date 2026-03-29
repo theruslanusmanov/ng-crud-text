@@ -8,10 +8,14 @@ import {
   Renderer2,
   signal,
   ViewChild,
+  WritableSignal,
 } from '@angular/core';
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { TextStorageService } from '../../core/services/text-storage-service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
+import { ItemEntity } from '../../core';
 import { fromEvent } from 'rxjs';
+import { NgTemplateOutlet } from '@angular/common';
 
 enum Color {
   RED = 'red',
@@ -19,22 +23,22 @@ enum Color {
   BLUE = 'blue',
 }
 
-export enum ViewMode {
-  VIEW,
-  CREATE,
-  EDIT,
-}
-
 @Component({
-  selector: 'app-item',
+  selector: 'app-view-item',
   imports: [NgTemplateOutlet],
-  templateUrl: './item.html',
-  styleUrl: './item.scss',
+  templateUrl: './view-item.html',
+  styleUrl: './view-item.scss',
 })
-export class Item implements OnInit, AfterViewInit {
+export class ViewItem implements OnInit, AfterViewInit {
   private document = inject(DOCUMENT);
   private renderer = inject(Renderer2);
-  viewMode: ViewMode = inject(ActivatedRoute).snapshot.data['mode'];
+  private textStorage = inject(TextStorageService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  form = inject(FormBuilder).group({
+    content: [''],
+  });
+  item: WritableSignal<ItemEntity | undefined> = signal(undefined);
 
   @ViewChild('content', { read: ElementRef })
   contentView!: ElementRef<HTMLParagraphElement>;
@@ -93,7 +97,7 @@ export class Item implements OnInit, AfterViewInit {
     fromEvent(this.contentView.nativeElement, 'mouseover').subscribe((event: any) => {
       this.annotation.set(event.target.getAttribute('data-annotation-text'));
       this.annotationTop.set(event.pageY);
-      this.annotationLeft.set(event.pageX)
+      this.annotationLeft.set(event.pageX);
       this.isShowAnnotation.set(true);
     });
     fromEvent(this.contentView.nativeElement, 'mouseout').subscribe((event: any) => {
@@ -114,14 +118,17 @@ export class Item implements OnInit, AfterViewInit {
     });
   }
 
+  edit(id: string) {
+    this.router.navigate([`/edit/${id}`]);
+  }
+
   ngOnInit() {
-    console.log(this.viewMode);
+    const id = this.route.snapshot.params['id'];
+    this.item.set(this.textStorage.get(id));
   }
 
   ngAfterViewInit() {
     this.listenAnnotations();
     this.listenSelectionChange();
   }
-
-  protected readonly ViewMode = ViewMode;
 }

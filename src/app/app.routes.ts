@@ -1,22 +1,21 @@
 import { Routes } from '@angular/router';
 import { List } from './list/list';
-import { Item, ViewMode } from './item/item';
+import { CreateItem } from './create-item/create-item';
+import { EditItem } from './edit-item/edit-item';
+import { ViewItem } from './view-item/view-item';
 
 export const routes: Routes = [
   {
-    path: 'edit',
-    component: Item,
-    data: { mode: ViewMode.CREATE },
+    path: 'create',
+    component: CreateItem,
   },
   {
     path: 'edit/:id',
-    component: Item,
-    data: { mode: ViewMode.EDIT },
+    component: EditItem,
   },
   {
-    path: ':id',
-    component: Item,
-    data: { mode: ViewMode.VIEW },
+    path: 'view/:id',
+    component: ViewItem,
   },
   {
     path: '',

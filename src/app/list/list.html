@@ -1,9 +1,9 @@
-<a routerLink="edit">
+<a routerLink="create">
   <button class="button">Create text</button>
 </a>
 
 @for (item of items; track item.id) {
-  <a class="item" [routerLink]="item.id">
+  <a class="item" [routerLink]="'view/' + item.id">
     {{ item.content }}
   </a>
 }

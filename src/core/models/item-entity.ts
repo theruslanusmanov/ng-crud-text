@@ -1,7 +1,7 @@
 export interface ItemEntity {
   id: string;
   content: string;
-  modificators: TextModificator[];
+  modificators?: TextModificator[];
 }
 
 export interface TextModificator {

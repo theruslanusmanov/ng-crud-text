@@ -1,0 +1,34 @@
+<p class="content" #content>
+  @if (isShowTooltip()) {
+    <ng-container *ngTemplateOutlet="tooltip"></ng-container>
+  }
+  @if (isShowAnnotation() && annotation()) {
+    <ng-container *ngTemplateOutlet="annotationTooltip"></ng-container>
+  }
+  {{ item()?.content }}
+
+</p>
+<button class="button" (click)="edit(item()!.id)">Edit</button>
+<ng-template #tooltip>
+  <div class="tooltip">
+    <div class="tooltip__actions">
+      <div class="tooltip__action" (click)="annotate()">Annotate</div>
+      <div class="tooltip__action" (click)="underline()">Underline</div>
+    </div>
+    <div class="tooltip__colors">
+      @for (color of colors; track color) {
+        <div class="tooltip__color tooltip__color--{{color}}" (click)="setColor(color)"></div>
+      }
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #annotationTooltip>
+  <div
+    class="annotation"
+    [style.top]="annotationTop() + 'px'"
+    [style.left]="annotationLeft() + 'px'"
+  >
+    {{ annotation() }}
+  </div>
+</ng-template>
